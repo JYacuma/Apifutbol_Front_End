@@ -31,7 +31,7 @@ fun AdminPanelScreen(viewModel: FutbolViewModel, onBack: () -> Unit) {
             TopAppBar(
                 title = { Text("BD ADMIN", color = Color.Red, fontWeight = FontWeight.Black) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Volver", tint = Color.Red) } },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF121212))
             )
         },
         floatingActionButton = {
@@ -40,12 +40,12 @@ fun AdminPanelScreen(viewModel: FutbolViewModel, onBack: () -> Unit) {
             }
         }
     ) { padding ->
-        Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(padding)) {
-            ScrollableTabRow(selectedTabIndex = tabSeleccionada, containerColor = MaterialTheme.colorScheme.surface, contentColor = Color.Red) {
-                Tab(selected = tabSeleccionada == 0, onClick = { tabSeleccionada = 0 }, text = { Text("JUGADORES", color = if(tabSeleccionada==0) Color.Red else MaterialTheme.colorScheme.onSurface) })
-                Tab(selected = tabSeleccionada == 1, onClick = { tabSeleccionada = 1 }, text = { Text("EQUIPOS", color = if(tabSeleccionada==1) Color.Red else MaterialTheme.colorScheme.onSurface) })
-                Tab(selected = tabSeleccionada == 2, onClick = { tabSeleccionada = 2 }, text = { Text("TÉCNICOS", color = if(tabSeleccionada==2) Color.Red else MaterialTheme.colorScheme.onSurface) })
-                Tab(selected = tabSeleccionada == 3, onClick = { tabSeleccionada = 3 }, text = { Text("PARTIDOS", color = if(tabSeleccionada==3) Color.Red else MaterialTheme.colorScheme.onSurface) })
+        Column(modifier = Modifier.fillMaxSize().background(Color(0xFF121212)).padding(padding)) {
+            ScrollableTabRow(selectedTabIndex = tabSeleccionada, containerColor = Color(0xFF1E1E1E), contentColor = Color.Red) {
+                Tab(selected = tabSeleccionada == 0, onClick = { tabSeleccionada = 0 }, text = { Text("JUGADORES", color = if(tabSeleccionada==0) Color.Red else Color.Gray) })
+                Tab(selected = tabSeleccionada == 1, onClick = { tabSeleccionada = 1 }, text = { Text("EQUIPOS", color = if(tabSeleccionada==1) Color.Red else Color.Gray) })
+                Tab(selected = tabSeleccionada == 2, onClick = { tabSeleccionada = 2 }, text = { Text("TÉCNICOS", color = if(tabSeleccionada==2) Color.Red else Color.Gray) })
+                Tab(selected = tabSeleccionada == 3, onClick = { tabSeleccionada = 3 }, text = { Text("PARTIDOS", color = if(tabSeleccionada==3) Color.Red else Color.Gray) })
             }
 
             LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -67,15 +67,14 @@ fun AdminPanelScreen(viewModel: FutbolViewModel, onBack: () -> Unit) {
 
 @Composable
 fun AdminItemCard(titulo: String, subtitulo: String, onEdit: () -> Unit, onDelete: () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))) {
         Row(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(titulo, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                Text(subtitulo, color = MaterialTheme.colorScheme.onSurface.copy(alpha=0.6f))
+                Text(titulo, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(subtitulo, color = Color.Gray)
             }
             Row {
-                // YA FUNCIONAN AL TOQUE
-                Icon(Icons.Default.Edit, contentDescription = "Editar", tint = MaterialTheme.colorScheme.onSurface.copy(alpha=0.5f), modifier = Modifier.padding(end=16.dp).clickable { onEdit() })
+                Icon(Icons.Default.Edit, contentDescription = "Editar", tint = Color.Gray, modifier = Modifier.padding(end=16.dp).clickable { onEdit() })
                 Icon(Icons.Default.Delete, contentDescription = "Borrar", tint = Color.Red, modifier = Modifier.clickable { onDelete() })
             }
         }

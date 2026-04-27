@@ -38,7 +38,7 @@ fun MercadoScreen(viewModel: FutbolViewModel, tipoOperacion: Int, onBack: () -> 
 
             if (jugadoresMostrar.isEmpty()) {
                 Text(
-                    text = "Cargando base de datos de jugadores...",
+                    text = "No hay jugadores disponibles en este momento.",
                     color = Color.Gray,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.align(Alignment.Center).padding(16.dp)

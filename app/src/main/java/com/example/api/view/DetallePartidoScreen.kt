@@ -28,58 +28,44 @@ fun DetallePartidoScreen(viewModel: FutbolViewModel, idPartido: Long, onBack: ()
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("RESULTADO FINAL", style = MaterialTheme.typography.titleMedium, color = Color(0xFFFFC107)) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Volver", tint = Color(0xFFFFC107)) } },
+                title = { Text("RESULTADO", color = Color(0xFFFFC107), fontWeight = FontWeight.Black) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "VOLVER", tint = Color(0xFFFFC107)) } },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF121212))
             )
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize().background(Color(0xFF121212)).padding(16.dp)) {
 
+            // MARCADOR CENTRAL
             Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(24.dp)) {
-                    Text(partido?.fecha ?: "Fecha no disponible", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
+                    Text(partido?.fecha ?: "", color = Color.Gray, style = MaterialTheme.typography.labelMedium)
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                        // CORREGIDO: Usando idEquipoLocal e idEquipoVisita
-                        Text(viewModel.obtenerNombreEquipo(partido?.idEquipoLocal ?: 0), modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge, color = Color.White)
-
-                        Text("${partido?.golesLocal ?: 0} - ${partido?.golesVisita ?: 0}",
-                            style = MaterialTheme.typography.displaySmall,
-                            fontWeight = FontWeight.Black,
-                            color = Color(0xFFFFC107),
-                            modifier = Modifier.padding(horizontal = 16.dp))
-
-                        Text(viewModel.obtenerNombreEquipo(partido?.idEquipoVisita ?: 0), modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge, color = Color.White)
+                        Text(viewModel.obtenerNombreEquipo(partido?.idEquipoLocal ?: 0), modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, color = Color.White)
+                        Text("${partido?.golesLocal} - ${partido?.golesVisita}", style = MaterialTheme.typography.displayMedium, fontWeight = FontWeight.Black, color = Color(0xFFFFC107), modifier = Modifier.padding(horizontal = 16.dp))
+                        Text(viewModel.obtenerNombreEquipo(partido?.idEquipoVisita ?: 0), modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, color = Color.White)
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(partido?.estadio ?: "Estadio", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                    Text(partido?.estadio ?: "", color = Color.Gray, modifier = Modifier.padding(top = 8.dp))
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            Text("INCIDENCIAS DEL ENCUENTRO", fontWeight = FontWeight.Bold, color = Color(0xFFFFC107))
+            Text("INCIDENCIAS", fontWeight = FontWeight.Black, color = Color(0xFFFFC107))
             Spacer(modifier = Modifier.height(8.dp))
 
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (stats.isEmpty()) {
-                    item { Text("No hay incidencias registradas en este partido.", color = Color.Gray) }
-                } else {
-                    items(stats) { stat ->
-                        val jugador = jugadores.find { it.idJugador == stat.idJugador }
-                        Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))) {
-                            Row(modifier = Modifier.padding(16.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                                Text(jugador?.nombre ?: "Jugador desconocido", modifier = Modifier.weight(1f), color = Color.White)
-                                Row {
-                                    if (stat.goles > 0) {
-                                        Badge(containerColor = Color(0xFFFFC107)) { Text("⚽ ${stat.goles}", color = Color.Black) }
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                    }
-                                    if (stat.asistencias > 0) {
-                                        Badge(containerColor = Color(0xFF03A9F4)) { Text("👟 ${stat.asistencias}", color = Color.White) }
-                                    }
+                items(stats) { stat ->
+                    val jugador = jugadores.find { it.idJugador == stat.idJugador }
+                    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))) {
+                        Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Text(jugador?.nombre ?: "Jugador", modifier = Modifier.weight(1f), color = Color.White)
+                            Row {
+                                if (stat.goles > 0) Badge(containerColor = Color(0xFFFFC107)) { Text("⚽ ${stat.goles}", color = Color.Black) }
+                                if (stat.asistencias > 0) {
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Badge(containerColor = Color(0xFF03A9F4)) { Text("👟 ${stat.asistencias}") }
                                 }
                             }
                         }

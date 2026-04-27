@@ -12,43 +12,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AjustesScreen(
-    onFicharClick: () -> Unit,
-    onVenderClick: () -> Unit,
-    onGestionDT: () -> Unit,
-    onAdminAccess: () -> Unit
-) {
+fun AjustesScreen(onFicharClick: () -> Unit, onVenderClick: () -> Unit, onGestionDT: () -> Unit, onAdminAccess: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize().background(Color(0xFF121212)).padding(16.dp)) {
         Text("AJUSTES / OFICINA", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Black, color = Color(0xFFFFC107))
         Spacer(modifier = Modifier.height(24.dp))
 
-        BotonAjustes("Mercado de Fichajes", "Buscar nuevos talentos", Icons.Default.ShoppingCart, onFicharClick)
-        BotonAjustes("Vender Jugadores", "Gestionar salidas y cesiones", Icons.Default.ExitToApp, onVenderClick)
-        BotonAjustes("Gestión de Técnico", "Contratar o despedir DT", Icons.Default.Person, onGestionDT)
+        BotonOpcion("Mercado de Fichajes", "Traer cracks mundiales", Icons.Default.ShoppingCart, onFicharClick)
+        BotonOpcion("Vender Jugadores", "Gestionar salidas", Icons.Default.ExitToApp, onVenderClick)
+        BotonOpcion("Gestión de Técnico", "Staff de Ancelotti", Icons.Default.Person, onGestionDT)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        OutlinedButton(
-            onClick = onAdminAccess,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red)
-        ) {
-            Icon(Icons.Default.Settings, contentDescription = null)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Panel de Administrador (CRUD)")
+        TextButton(onClick = onAdminAccess, modifier = Modifier.fillMaxWidth()) {
+            Text("Panel de Administrador 🔒", color = Color.Red.copy(alpha = 0.7f))
         }
     }
 }
 
 @Composable
-fun BotonAjustes(titulo: String, subtitulo: String, icono: androidx.compose.ui.graphics.vector.ImageVector, onClick: () -> Unit) {
+fun BotonOpcion(t: String, s: String, i: androidx.compose.ui.graphics.vector.ImageVector, onClick: () -> Unit) {
     Card(onClick = onClick, modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))) {
         Row(modifier = Modifier.padding(16.dp)) {
-            Icon(icono, contentDescription = null, tint = Color(0xFFFFC107), modifier = Modifier.size(32.dp))
+            Icon(i, contentDescription = null, tint = Color(0xFFFFC107), modifier = Modifier.size(30.dp))
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(titulo, fontWeight = FontWeight.Bold, color = Color.White)
-                Text(subtitulo, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                Text(t, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(s, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
             }
         }
     }
