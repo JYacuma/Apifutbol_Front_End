@@ -74,7 +74,7 @@ class FutbolViewModel : ViewModel() {
         return equipoEncontrado?.nombre ?: "Desconocido"
     }
 
-    // ¡AQUÍ ESTÁ LA FUNCIÓN QUE SE NOS HABÍA PERDIDO!
+
     fun ficharNuevoJugador(nombre: String, posicion: String, dorsal: Int, nacionalidad: String) {
         viewModelScope.launch {
             val nuevo = Jugador(
@@ -96,12 +96,12 @@ class FutbolViewModel : ViewModel() {
 
     fun ejecutarTraspaso(jugador: Jugador, nuevoIdEquipo: Long) {
         viewModelScope.launch {
-            // Kotlin hace una copia exacta del jugador, pero le cambiamos el equipo
+
             val jugadorActualizado = jugador.copy(idEquipo = nuevoIdEquipo)
 
             val exito = repository.traspasarJugador(jugadorActualizado)
             if (exito) {
-                // Si la BD aceptó el cambio, recargamos la app para que se mueva de lista
+
                 cargarTodoDesdeBackend()
             }
         }
@@ -118,7 +118,7 @@ class FutbolViewModel : ViewModel() {
             val exito2 = repository.actualizarEntrenador(rivalActualizado)
 
             if (exito1 && exito2) {
-                // Recargamos todo para que la app refresque la plantilla
+
                 cargarTodoDesdeBackend()
             }
         }
@@ -128,7 +128,7 @@ class FutbolViewModel : ViewModel() {
         viewModelScope.launch {
             val exito = repository.eliminarJugador(idJugador)
             if (exito) {
-                cargarTodoDesdeBackend() // Refresca la UI
+                cargarTodoDesdeBackend()
             }
         }
     }

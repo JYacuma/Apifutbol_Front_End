@@ -30,27 +30,26 @@ fun MercadoScreen(viewModel: FutbolViewModel, tipoOperacion: Int, onBack: () -> 
             TopAppBar(
                 title = { Text(titulo, color = Color(0xFFFFC107), fontWeight = FontWeight.Bold) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Volver", tint = Color(0xFFFFC107)) } },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF121212))
             )
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(padding)) {
+        Box(modifier = Modifier.fillMaxSize().background(Color(0xFF121212)).padding(padding)) {
 
-            // ESTO EVITA LA PANTALLA NEGRA SI NO HAY JUGADORES
             if (jugadoresMostrar.isEmpty()) {
                 Text(
-                    text = "El mercado está vacío en este momento.",
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    text = "Cargando base de datos de jugadores...",
+                    color = Color.Gray,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.align(Alignment.Center).padding(16.dp)
                 )
             } else {
                 LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxSize()) {
                     items(jugadoresMostrar) { jugador ->
-                        Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+                        Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Text(jugador.nombre.uppercase(), fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.onSurface)
-                                Text("${jugador.posicion} • Eq: ${viewModel.obtenerNombreEquipo(jugador.idEquipo)}", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                                Text(jugador.nombre.uppercase(), fontWeight = FontWeight.Black, color = Color.White)
+                                Text("${jugador.posicion} • Eq: ${viewModel.obtenerNombreEquipo(jugador.idEquipo)}", color = Color.Gray)
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Button(onClick = { /* Lógica futura */ }, colors = ButtonDefaults.buttonColors(containerColor = if(esFichaje) Color(0xFF4CAF50) else Color.Red)) {
                                     Text(if(esFichaje) "Comprar" else "Vender", color = Color.White)

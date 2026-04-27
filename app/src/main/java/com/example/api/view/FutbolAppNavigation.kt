@@ -8,6 +8,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.api.viewmodel.FutbolViewModel
 
+import com.example.api.view.SplashScreen
+import com.example.api.view.MercadoScreen
+import com.example.api.view.DetalleJugadorScreen
+import com.example.api.view.DetallePartidoScreen
+import com.example.api.view.GestionarTecnicoScreen
+import com.example.api.view.AdminPanelScreen
 
 @Composable
 fun FutbolAppNavigation(viewModel: FutbolViewModel) {
@@ -15,6 +21,7 @@ fun FutbolAppNavigation(viewModel: FutbolViewModel) {
 
     NavHost(navController = navController, startDestination = "splash") {
 
+        // AQUÍ ESTÁ TU PANTALLA DE CARGA
         composable("splash") {
             SplashScreen(
                 viewModel = viewModel,
@@ -26,7 +33,6 @@ fun FutbolAppNavigation(viewModel: FutbolViewModel) {
             )
         }
 
-        // AQUÍ ESTÁ EL CAMBIO: El Manager ahora controla toda su barra de abajo solo con estos dos datos
         composable("manager_dashboard") {
             ManagerDashboardScreen(navController = navController, viewModel = viewModel)
         }

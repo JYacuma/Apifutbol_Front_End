@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.example.api.ui.theme.ApiTheme
+import androidx.compose.material3.MaterialTheme
 import com.example.api.view.FutbolAppNavigation
 import com.example.api.viewmodel.FutbolViewModel
 
@@ -16,7 +16,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ApiTheme {
+
+            MaterialTheme {
 
                 FutbolAppNavigation(viewModel = viewModel)
             }
