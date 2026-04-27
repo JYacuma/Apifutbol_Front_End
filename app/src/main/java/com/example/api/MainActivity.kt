@@ -10,7 +10,7 @@ import com.example.api.viewmodel.FutbolViewModel
 
 class MainActivity : ComponentActivity() {
 
-    // 1. Iniciamos el "cerebro" de la aplicación
+
     private val viewModel: FutbolViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

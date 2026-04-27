@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,44 +22,43 @@ import com.example.api.viewmodel.FutbolViewModel
 
 @Composable
 fun ManagerDashboardScreen(navController: NavController, viewModel: FutbolViewModel) {
-    // Esta variable controla en qué pestaña estamos (0=General, 1=Plantilla, 2=Estado, 3=Oficina)
-    var tabSeleccionada by remember { mutableIntStateOf(0) }
+    // LA SOLUCIÓN AL BUG: rememberSaveable hace que no se reinicie a General al volver
+    var tabSeleccionada by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
         bottomBar = {
-            NavigationBar(containerColor = Color(0xFF1E1E1E)) {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Home, contentDescription = "General") },
                     label = { Text("General", fontSize = 10.sp) },
                     selected = tabSeleccionada == 0,
                     onClick = { tabSeleccionada = 0 },
-                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.Black, indicatorColor = Color(0xFFFFC107), unselectedIconColor = Color.Gray, selectedTextColor = Color(0xFFFFC107), unselectedTextColor = Color.Gray)
+                    colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.onPrimary, indicatorColor = Color(0xFFFFC107), unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha=0.5f))
                 )
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Person, contentDescription = "Plantilla") },
                     label = { Text("Plantilla", fontSize = 10.sp) },
                     selected = tabSeleccionada == 1,
                     onClick = { tabSeleccionada = 1 },
-                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.Black, indicatorColor = Color(0xFFFFC107), unselectedIconColor = Color.Gray, selectedTextColor = Color(0xFFFFC107), unselectedTextColor = Color.Gray)
+                    colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.onPrimary, indicatorColor = Color(0xFFFFC107), unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha=0.5f))
                 )
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Star, contentDescription = "Estado") },
                     label = { Text("Estado", fontSize = 10.sp) },
                     selected = tabSeleccionada == 2,
                     onClick = { tabSeleccionada = 2 },
-                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.Black, indicatorColor = Color(0xFFFFC107), unselectedIconColor = Color.Gray, selectedTextColor = Color(0xFFFFC107), unselectedTextColor = Color.Gray)
+                    colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.onPrimary, indicatorColor = Color(0xFFFFC107), unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha=0.5f))
                 )
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Settings, contentDescription = "Oficina") },
                     label = { Text("Oficina", fontSize = 10.sp) },
                     selected = tabSeleccionada == 3,
                     onClick = { tabSeleccionada = 3 },
-                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.Black, indicatorColor = Color(0xFFFFC107), unselectedIconColor = Color.Gray, selectedTextColor = Color(0xFFFFC107), unselectedTextColor = Color.Gray)
+                    colors = NavigationBarItemDefaults.colors(selectedIconColor = MaterialTheme.colorScheme.onPrimary, indicatorColor = Color(0xFFFFC107), unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha=0.5f))
                 )
             }
         }
     ) { paddingValues ->
-        // Aquí mostramos la pantalla dependiendo de qué botón tocaste abajo
         Box(modifier = Modifier.padding(paddingValues)) {
             when (tabSeleccionada) {
                 0 -> TabGeneral(viewModel, onPartidoClick = { id -> navController.navigate("detalle_partido/$id") })
@@ -75,21 +75,20 @@ fun ManagerDashboardScreen(navController: NavController, viewModel: FutbolViewMo
     }
 }
 
-// Este es tu diseño de "General" que me pasaste, convertido en su propia función interna
 @Composable
 fun TabGeneral(viewModel: FutbolViewModel, onPartidoClick: (Long) -> Unit) {
     val partidos by viewModel.partidos.collectAsState()
     val proximoPartido = partidos.firstOrNull()
     val ultimosResultados = if (partidos.size > 1) partidos.drop(1) else emptyList()
 
-    Column(modifier = Modifier.fillMaxSize().background(Color(0xFF121212))) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Text("GENERAL", modifier = Modifier.fillMaxWidth().padding(top = 24.dp), textAlign = TextAlign.Center, style = MaterialTheme.typography.titleLarge, color = Color(0xFFFFC107), fontWeight = FontWeight.Bold)
-        Text("Bienvenido Florentino Pérez", modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+        Text("Bienvenido Florentino Pérez", modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground.copy(alpha=0.6f))
 
         LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             if (proximoPartido != null) {
                 item {
-                    Text("PRÓXIMO COMPROMISO", color = Color.Gray, fontWeight = FontWeight.Bold)
+                    Text("PRÓXIMO COMPROMISO", color = MaterialTheme.colorScheme.onBackground.copy(alpha=0.6f), fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(8.dp))
                     Card(
                         modifier = Modifier.fillMaxWidth().clickable { onPartidoClick(proximoPartido.idPartido) },
@@ -115,18 +114,18 @@ fun TabGeneral(viewModel: FutbolViewModel, onPartidoClick: (Long) -> Unit) {
             }
 
             if (ultimosResultados.isNotEmpty()) {
-                item { Text("ÚLTIMOS RESULTADOS", color = Color.Gray, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp)) }
+                item { Text("ÚLTIMOS RESULTADOS", color = MaterialTheme.colorScheme.onBackground.copy(alpha=0.6f), fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp)) }
                 items(ultimosResultados) { partido ->
                     Card(
                         modifier = Modifier.fillMaxWidth().clickable { onPartidoClick(partido.idPartido) },
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                     ) {
                         Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                            Text(viewModel.obtenerNombreEquipo(partido.idEquipoLocal), modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = Color.White)
-                            Surface(color = Color.Black, shape = MaterialTheme.shapes.small) {
+                            Text(viewModel.obtenerNombreEquipo(partido.idEquipoLocal), modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface)
+                            Surface(color = MaterialTheme.colorScheme.background, shape = MaterialTheme.shapes.small) {
                                 Text("${partido.golesLocal} - ${partido.golesVisita}", modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontWeight = FontWeight.Black, color = Color(0xFFFFC107))
                             }
-                            Text(viewModel.obtenerNombreEquipo(partido.idEquipoVisita), modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = Color.White)
+                            Text(viewModel.obtenerNombreEquipo(partido.idEquipoVisita), modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface)
                         }
                     }
                 }

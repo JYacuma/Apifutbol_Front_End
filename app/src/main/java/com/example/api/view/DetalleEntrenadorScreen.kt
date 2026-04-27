@@ -20,7 +20,7 @@ fun DetalleEntrenadorScreen(idEntrenador: Long, viewModel: FutbolViewModel) {
     val partidos by viewModel.partidos.collectAsState()
     val entrenador = entrenadores.find { it.idEntrenador == idEntrenador }
 
-    // Cálculo de rendimiento dinámico
+
     val partidosEquipo = partidos.filter { it.idEquipoLocal == entrenador?.idEquipo || it.idEquipoVisita == entrenador?.idEquipo }
     val victorias = partidosEquipo.count {
         (it.idEquipoLocal == entrenador?.idEquipo && it.golesLocal > it.golesVisita) ||

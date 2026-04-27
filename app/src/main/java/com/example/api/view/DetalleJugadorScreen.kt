@@ -63,7 +63,7 @@ fun DetalleJugadorScreen(id: Long, viewModel: FutbolViewModel, onBack: () -> Uni
                 Text("ESTADÍSTICAS TEMPORADA", fontWeight = FontWeight.Bold, color = Color.Gray)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Tarjetas de Rendimiento
+
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     StatBox(titulo = "Partidos", valor = "$partidosJugados", modifier = Modifier.weight(1f))
                     StatBox(titulo = "Goles", valor = "$golesTotales", modifier = Modifier.weight(1f))
